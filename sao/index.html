@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sword Art Online — Registro de jogador</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="bg-grid"></div>
+    <div class="bg-glow"></div>
+    <div class="scanline"></div>
+
+    <div class="app-container">
+        <!-- HEADER / NAVEGAÇÃO HUD -->
+        <header id="main-header" class="hidden">
+            <div class="logo-group">
+                <span class="brand-tag">ARGUS SYSTEMS</span>
+                <span class="system-title">Sistema FullDive</span>
+            </div>
+            <div class="step-indicator" id="step-indicator">
+                <span class="step-dot active" data-step="1"></span>
+                <span class="step-dot" data-step="2"></span>
+                <span class="step-dot" data-step="3"></span>
+                <span class="step-dot" data-step="4"></span>
+                <span class="step-dot" data-step="5"></span>
+                <span class="step-dot" data-step="6"></span>
+            </div>
+        </header>
+
+        <!-- VIEWPORT PRINCIPAL -->
+        <main class="viewport">
+
+            <!-- ETAPA 0: TELA DE ABERTURA -->
+            <section id="step-0" class="step-screen active">
+                <div class="splash-card">
+                    <div class="argus-badge">ARGUS SYSTEMS</div>
+                    <div class="terminal-loader">
+                        <div class="terminal-text" id="boot-status">Inicializando conexão FullDive...</div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" id="boot-progress"></div>
+                        </div>
+                        <div class="progress-percentage" id="boot-percentage">0%</div>
+                    </div>
+                    <div class="splash-titles hidden" id="splash-titles">
+                        <div class="status-badge-ready">Conexão NerveGear pronta</div>
+                        <h1 class="main-title">SWORD ART ONLINE</h1>
+                        <p class="sub-title">FullDive MMORPG</p>
+                        <button id="btn-begin" class="btn-primary glow-btn">Iniciar registro</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FORMULÁRIO -->
+            <form id="sao-registration-form" onsubmit="return false;">
+
+                <!-- ETAPA 1: REGISTRO E AVATAR -->
+                <section id="step-1" class="step-screen hidden">
+                    <div class="section-header">
+                        <span class="section-badge">Etapa 01 — Identidade e avatar</span>
+                        <h2>Registro de jogador</h2>
+                        <p class="subtitle">Antes de entrar no mundo virtual, precisamos saber quem você é.</p>
+                    </div>
+
+                    <div class="grid-2col">
+                        <!-- Dados Pessoais -->
+                        <div class="glass-panel">
+                            <h3>Informações pessoais</h3>
+                            <div class="form-group">
+                                <label for="fullName">Nome Completo *</label>
+                                <input type="text" id="fullName" class="input-field" placeholder="Ex: Kazuto Kirigaya" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="preferredName">Nome de Preferência / Apelido *</label>
+                                <input type="text" id="preferredName" class="input-field" placeholder="Ex: Kirito" required>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="age">Idade *</label>
+                                    <input type="number" id="age" class="input-field" min="10" max="100" placeholder="16" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="birthday">Data de Nascimento</label>
+                                    <input type="date" id="birthday" class="input-field">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="pronouns">Pronomes</label>
+                                    <input type="text" id="pronouns" class="input-field" placeholder="Ele/Dele, Ela/Dela, Elu/Delu">
+                                </div>
+                                <div class="form-group">
+                                    <label for="country">País</label>
+                                    <input type="text" id="country" class="input-field" placeholder="Brasil">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="timeZone">Fuso Horário</label>
+                                <input type="text" id="timeZone" class="input-field" placeholder="UTC-03:00 (Brasília)">
+                            </div>
+                        </div>
+
+                        <!-- Aparência do Avatar -->
+                        <div class="glass-panel">
+                            <h3>Perfil do avatar</h3>
+                            
+                            <!-- Upload de Imagem de Avatar -->
+                            <div class="avatar-upload-container">
+                                <div class="avatar-preview-box" id="avatarPreviewBox">
+                                    <img id="avatarImagePreview" src="" alt="Preview do Avatar" class="hidden">
+                                    <div id="avatarPlaceholder" class="avatar-placeholder">
+                                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                                        <span>Enviar imagem do avatar</span>
+                                    </div>
+                                </div>
+                                <input type="file" id="avatarUpload" accept="image/*" class="hidden-file-input">
+                                <button type="button" class="btn-secondary btn-small margin-top-sm" onclick="document.getElementById('avatarUpload').click();">Selecionar arquivo de imagem</button>
+                            </div>
+
+                            <div class="form-row margin-top">
+                                <div class="form-group">
+                                    <label for="hairColor">Cor do Cabelo</label>
+                                    <input type="text" id="hairColor" class="input-field" placeholder="Ex: Castanho Escuro, Platinado">
+                                </div>
+                                <div class="form-group">
+                                    <label for="eyeColor">Cor dos Olhos</label>
+                                    <input type="text" id="eyeColor" class="input-field" placeholder="Ex: Preto, Azul Neon">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="hairStyle">Estilo de Cabelo</label>
+                                    <input type="text" id="hairStyle" class="input-field" placeholder="Curto, Espetado, Tranças">
+                                </div>
+                                <div class="form-group">
+                                    <label for="skinTone">Tom de Pele</label>
+                                    <input type="text" id="skinTone" class="input-field" placeholder="Clara, Bronzeada, Escura">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="height">Altura</label>
+                                    <input type="text" id="height" class="input-field" placeholder="Ex: 1,72 m">
+                                </div>
+                                <div class="form-group">
+                                    <label for="build">Físico / Porte</label>
+                                    <input type="text" id="build" class="input-field" placeholder="Magro, Atlético, Robusto">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="distinguishingFeatures">Marcas Distintivas</label>
+                                <input type="text" id="distinguishingFeatures" class="input-field" placeholder="Cicatrizes, Tatuagens, Marcas únicas">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="appearanceDesc">Descrição Detalhada do Avatar</label>
+                                <textarea id="appearanceDesc" class="textarea-field" rows="2" placeholder="Descreva vestimentas desejadas, estilo visual ou detalhes marcantes..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Perfil Psicométrico -->
+                    <div class="glass-panel margin-top">
+                        <h3>Perfil psicométrico do usuário</h3>
+                        <p class="hint-text">Ajude a Argus Systems a calibrar seus parâmetros de sincronização neural.</p>
+                        
+                        <div class="form-group">
+                            <label for="selfDescription">Descreva você mesmo em poucas palavras.</label>
+                            <input type="text" id="selfDescription" class="input-field" placeholder="Determinado, calmo, perspicaz...">
+                        </div>
+                        <div class="grid-2col">
+                            <div class="form-group">
+                                <label for="strengths">Quais são seus maiores pontos fortes?</label>
+                                <textarea id="strengths" class="textarea-field" rows="2" placeholder="Pensamento tático, manter a calma sob pressão..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="weaknesses">Quais são suas maiores fraquezas ou vulnerabilidades?</label>
+                                <textarea id="weaknesses" class="textarea-field" rows="2" placeholder="Impaciência, dificuldade em pedir ajuda..."></textarea>
+                            </div>
+                        </div>
+                        <div class="grid-2col">
+                            <div class="form-group">
+                                <label for="motivations">O que costuma motivar você?</label>
+                                <input type="text" id="motivations" class="input-field" placeholder="Proteger amigos, dominar habilidades, liberdade...">
+                            </div>
+                            <div class="form-group">
+                                <label for="reactionUnderPressure">Como você reage sob extrema pressão?</label>
+                                <input type="text" id="reactionUnderPressure" class="input-field" placeholder="O foco aumenta, paraliso, agindo por instinto...">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ETAPA 2: PREFERÊNCIAS DE COMBATE E ROLES -->
+                <section id="step-2" class="step-screen hidden">
+                    <div class="section-header">
+                        <span class="section-badge">Etapa 02 — Combate e progressão</span>
+                        <h2>Configuração de combate</h2>
+                        <p class="subtitle">Ajuste suas preferências operacionais para o motor de habilidades de espada.</p>
+                    </div>
+
+                    <div class="glass-panel">
+                        <h3>Perfil de combate</h3>
+                        
+                        <div class="form-group">
+                            <label>Se pudesse escolher sua arma, qual usaria? <span class="tag-hint">(Marque as que lhe interessam)</span></label>
+                            <div class="checkbox-grid" id="weapon-options">
+                                <label class="custom-chip"><input type="checkbox" value="Espada"><span>Espada</span></label>
+                                <label class="custom-chip"><input type="checkbox" value="Florete"><span>Florete</span></label>
+                                <label class="custom-chip"><input type="checkbox" value="Espagardão"><span>Espagardão (Greatsword)</span></label>
+                                <label class="custom-chip"><input type="checkbox" value="Adaga"><span>Adaga</span></label>
+                                <label class="custom-chip"><input type="checkbox" value="Lança"><span>Lança</span></label>
+                                <label class="custom-chip"><input type="checkbox" value="Machado"><span>Machado</span></label>
+                                <label class="custom-chip"><input type="checkbox" value="Maça"><span>Maça</span></label>
+                                <label class="custom-chip"><input type="checkbox" value="Arco"><span>Arco</span></label>
+                                <label class="custom-chip"><input type="checkbox" value="Escudo"><span>Escudo</span></label>
+                                <label class="custom-chip"><input type="checkbox" value="Punhos"><span>Punhos</span></label>
+                                <label class="custom-chip"><input type="checkbox" value="Outra"><span>Outra</span></label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="primaryWeapon">Qual seria sua escolha PRINCIPAL de arma?</label>
+                            <input type="text" id="primaryWeapon" class="input-field" placeholder="Ex: Espada de uma mão">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Que tipo de estilo de combate mais te atrai?</label>
+                            <div class="checkbox-grid" id="style-options">
+                                <label class="custom-chip"><input type="checkbox" value="Rápido / Ágil"><span>Rápido / Ágil</span></label>
+                                <label class="custom-chip"><input type="checkbox" value="Pesado / Poderoso"><span>Pesado / Poderoso</span></label>
+                                <label class="custom-chip"><input type="checkbox" value="Defensivo"><span>Defensivo</span></label>
+                                <label class="custom-chip"><input type="checkbox" value="Técnico"><span>Técnico</span></label>
+                                <label class="custom-chip"><input type="checkbox" value="Longo Alcance"><span>Longo Alcance</span></label>
+                                <label class="custom-chip"><input type="checkbox" value="Equilibrado"><span>Equilibrado</span></label>
+                                <label class="custom-chip"><input type="checkbox" value="Suporte"><span>Suporte</span></label>
+                                <label class="custom-chip"><input type="checkbox" value="Imprevisível"><span>Imprevisível</span></label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="combatDescription">Descreva seu estilo de luta ideal em combate.</label>
+                            <textarea id="combatDescription" class="textarea-field" rows="2" placeholder="Ex: Aparar ataques no último segundo e contra-atacar com precisão..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel margin-top">
+                        <h3>Progressão e expectativas de papel</h3>
+                        
+                        <div class="form-group">
+                            <label>Se Sword Art Online oferecesse caminhos de progressão, quais te interessariam?</label>
+                            <div class="checkbox-grid" id="role-options">
+                                <label class="custom-chip"><input type="checkbox" value="Combatente de Linha de Frente"><span>Linha de Frente</span></label>
+                                <label class="custom-chip"><input type="checkbox" value="Tank / Defensor"><span>Tank</span></label>
+                                <label class="custom-chip"><input type="checkbox" value="Duelista"><span>Duelista</span></label>
+                                <label class="custom-chip"><input type="checkbox" value="Assassino"><span>Assassino</span></label>
+                                <label class="custom-chip"><input type="checkbox" value="Ranger / Atirador"><span>Ranger</span></label>
+                                <label class="custom-chip"><input type="checkbox" value="Mago"><span>Mago</span></label>
+                                <label class="custom-chip"><input type="checkbox" value="Suporte"><span>Suporte</span></label>
+                                <label class="custom-chip"><input type="checkbox" value="Artesão / Ferreiro"><span>Artesão</span></label>
+                                <label class="custom-chip"><input type="checkbox" value="Explorador"><span>Explorador</span></label>
+                                <label class="custom-chip"><input type="checkbox" value="Comerciante"><span>Comerciante</span></label>
+                                <label class="custom-chip"><input type="checkbox" value="Jogador Solo"><span>Jogador Solo</span></label>
+                                <label class="custom-chip"><input type="checkbox" value="Membro de Guilda"><span>Membro de Guilda</span></label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Você prefere se especializar profundamente ou ser versátil?</label>
+                            <div class="slider-container">
+                                <span class="slider-label">Especialista</span>
+                                <input type="range" id="specializationSlider" min="1" max="100" value="50" class="custom-slider">
+                                <span class="slider-label">Versátil</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="rareAbilitiesRating">Quão importante é descobrir habilidades raras ou únicas para você? (1 = Pouco, 5 = Essencial)</label>
+                            <div class="rating-scale">
+                                <label class="rate-btn"><input type="radio" name="rareRating" value="1"><span>1</span></label>
+                                <label class="rate-btn"><input type="radio" name="rareRating" value="2"><span>2</span></label>
+                                <label class="rate-btn"><input type="radio" name="rareRating" value="3" checked><span>3</span></label>
+                                <label class="rate-btn"><input type="radio" name="rareRating" value="4"><span>4</span></label>
+                                <label class="rate-btn"><input type="radio" name="rareRating" value="5"><span>5</span></label>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ETAPA 3: EXPECTATIVAS DO MUNDO E OBJETIVOS -->
+                <section id="step-3" class="step-screen hidden">
+                    <div class="section-header">
+                        <span class="section-badge">Etapa 03 — Simulação Aincrad</span>
+                        <h2>O que você espera encontrar?</h2>
+                        <p class="subtitle">Aincrad está aguardando exploração. Personalize sua experiência FullDive.</p>
+                    </div>
+
+                    <div class="glass-panel">
+                        <h3>Atividades e interesses no mundo</h3>
+                        <label>O que você está mais ansioso para vivenciar em Sword Art Online?</label>
+                        <div class="checkbox-grid" id="world-activities">
+                            <label class="custom-chip"><input type="checkbox" value="Explorar áreas desconhecidas"><span>Explorar áreas desconhecidas</span></label>
+                            <label class="custom-chip"><input type="checkbox" value="Descobrir segredos"><span>Descobrir segredos</span></label>
+                            <label class="custom-chip"><input type="checkbox" value="Lutar contra monstros"><span>Lutar contra monstros</span></label>
+                            <label class="custom-chip"><input type="checkbox" value="Lutar contra outros jogadores"><span>Lutar contra outros jogadores</span></label>
+                            <label class="custom-chip"><input type="checkbox" value="Encontrar itens raros"><span>Encontrar itens raros</span></label>
+                            <label class="custom-chip"><input type="checkbox" value="Conhecer outros jogadores"><span>Conhecer outros jogadores</span></label>
+                            <label class="custom-chip"><input type="checkbox" value="Entrar em uma guilda"><span>Entrar em uma guilda</span></label>
+                            <label class="custom-chip"><input type="checkbox" value="Criar uma guilda"><span>Criar uma guilda</span></label>
+                            <label class="custom-chip"><input type="checkbox" value="Comércio"><span>Comércio</span></label>
+                            <label class="custom-chip"><input type="checkbox" value="Criação de itens (Crafting)"><span>Criação de itens</span></label>
+                            <label class="custom-chip"><input type="checkbox" value="Resolver enigmas"><span>Resolver enigmas</span></label>
+                            <label class="custom-chip"><input type="checkbox" value="Batalhas contra Chefões"><span>Batalhas contra Chefões</span></label>
+                            <label class="custom-chip"><input type="checkbox" value="História e mistérios"><span>História e mistérios</span></label>
+                            <label class="custom-chip"><input type="checkbox" value="Ficar mais forte"><span>Ficar mais forte</span></label>
+                            <label class="custom-chip"><input type="checkbox" value="Ficar famoso"><span>Ficar famoso</span></label>
+                            <label class="custom-chip"><input type="checkbox" value="Apenas vivenciar o mundo"><span>Apenas vivenciar o mundo</span></label>
+                        </div>
+
+                        <div class="grid-2col margin-top">
+                            <div class="form-group">
+                                <label for="disappointments">O que te decepcionaria em um VRMMORPG?</label>
+                                <textarea id="disappointments" class="textarea-field" rows="2" placeholder="Ex: Mecânicas injustas, falta de profundidade..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="mustExist">O que você REALMENTE espera que exista no jogo?</label>
+                                <textarea id="mustExist" class="textarea-field" rows="2" placeholder="Ex: Colisão realista de espadas, sistema de moradia..."></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="storyPreference">Que tipo de história você gostaria de vivenciar?</label>
+                            <textarea id="storyPreference" class="textarea-field" rows="2" placeholder="Ex: Uma jornada de superação e companheirismo..."></textarea>
+                        </div>
+
+                    </div>
+
+                    <div class="glass-panel margin-top">
+                        <h3>Objetivos e motivações do jogador</h3>
+                        
+                        <div class="grid-2col">
+                            <div class="form-group">
+                                <label for="firstGoal">Qual seria seu primeiro objetivo ao entrar no jogo?</label>
+                                <input type="text" id="firstGoal" class="input-field" placeholder="Explorar a Cidade dos Inícios, testar habilidades...">
+                            </div>
+                            <div class="form-group">
+                                <label for="highestFloorMotivation">O que te motivaria a alcançar o andar mais alto?</label>
+                                <input type="text" id="highestFloorMotivation" class="input-field" placeholder="Curiosidade, ambição, desafio...">
+                            </div>
+                        </div>
+
+                        <div class="grid-2col">
+                            <div class="form-group">
+                                <label for="socialPreference">Prefere explorar sozinho ou acompanhado?</label>
+                                <input type="text" id="socialPreference" class="input-field" placeholder="Estritamente solo, pequeno grupo, guilda...">
+                            </div>
+                            <div class="form-group">
+                                <label for="desiredCompanions">Que tipo de pessoas gostaria de conhecer?</label>
+                                <input type="text" id="desiredCompanions" class="input-field" placeholder="Leais, bem-humoradas, estratégicas...">
+                            </div>
+                        </div>
+
+                        <div class="grid-2col">
+                            <div class="form-group">
+                                <label for="antiTargetPersona">Que tipo de pessoa você NUNCA gostaria de se tornar?</label>
+                                <input type="text" id="antiTargetPersona" class="input-field" placeholder="Um traidor, um covarde, um explorador de novatos...">
+                            </div>
+                            <div class="form-group">
+                                <label for="riskLifeFactor">O que faria você arriscar sua vida?</label>
+                                <input type="text" id="riskLifeFactor" class="input-field" placeholder="Proteger um companheiro, defender meus princípios...">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="refuseToFightFactor">O que faria você se recusar a lutar?</label>
+                            <input type="text" id="refuseToFightFactor" class="input-field" placeholder="Violência desnecessária, atacar indefesos...">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="additionalNotes">Conte-nos qualquer outra coisa que você gostaria que sua experiência contivesse.</label>
+                            <textarea id="additionalNotes" class="textarea-field" rows="2" placeholder="Fique à vontade para adicionar detalhes extras..."></textarea>
+                            <span class="hint-text">Não existem respostas erradas.</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ETAPA 4: PROCESSAMENTO DE SISTEMA -->
+                <section id="step-4" class="step-screen hidden">
+                    <div class="processing-card">
+                        <div class="spinner-ring"></div>
+                        <h2>Compilando perfil de jogador</h2>
+                        <p class="subtitle">Sincronizando biometria com os servidores da Argus Systems...</p>
+
+                        <div class="status-list">
+                            <div class="status-row" id="proc-identity"><span class="status-label">Identidade</span><span class="status-value">Pendente</span></div>
+                            <div class="status-row" id="proc-avatar"><span class="status-label">Síntese de avatar</span><span class="status-value">Pendente</span></div>
+                            <div class="status-row" id="proc-combat"><span class="status-label">Perfil de combate</span><span class="status-value">Pendente</span></div>
+                            <div class="status-row" id="proc-preferences"><span class="status-label">Preferências</span><span class="status-value">Pendente</span></div>
+                            <div class="status-row" id="proc-objectives"><span class="status-label">Registro de objetivos</span><span class="status-value">Pendente</span></div>
+                            <div class="status-row" id="proc-nervegear"><span class="status-label">Status do NerveGear</span><span class="status-value">Pendente</span></div>
+                        </div>
+
+                        <button id="btn-proceed-eula" class="btn-primary hidden glow-btn margin-top">Prosseguir para contrato</button>
+                    </div>
+                </section>
+
+                <!-- ETAPA 5: CONTRATO DE ADESÃO -->
+                <section id="step-5" class="step-screen hidden">
+                    <div class="section-header">
+                        <span class="section-badge">Etapa 04 — Finalização</span>
+                        <h2>Último passo</h2>
+                        <p class="subtitle">Por favor, revise e aceite o Contrato de Usuário de Sword Art Online.</p>
+                    </div>
+
+                    <div class="glass-panel eula-container">
+                        <div class="eula-header">
+                            <h3>Sword Art Online — Contrato de usuário FullDive</h3>
+                            <span>ARGUS SYSTEMS CO., LTD.</span>
+                        </div>
+                        <div class="eula-box">
+                            <h4>1. Licença e operação do sistema FullDive</h4>
+                            <p>Ao conectar-se à rede de Sword Art Online através do hardware NerveGear desenvolvido pela Argus Systems, o usuário concede autorização para a tradução direta de sinais neurais. Os sinais motores cerebrais serão interceptados e renderizados no ambiente virtual de Aincrad.</p>
+                            
+                            <h4>2. Identidade do usuário e mapeamento biométrico</h4>
+                            <p>O usuário reconhece que os dados pessoais e perfil psicológico fornecidos durante o registro são processados para calibrar a taxa ideal de sincronização FullDive.</p>
+
+                            <h4>3. Propriedade virtual e conduta</h4>
+                            <p>Todos os itens, moedas, habilidades de espada e avatares gerados dentro do jogo permanecem sob a propriedade intelectual da Argus Systems. O usuário concorda em cumprir os protocolos de conduta do Sistema Cardinal.</p>
+
+                            <h4>4. Política de manutenção e interrupção</h4>
+                            <p>A Argus Systems reserva-se o direito de gerenciar a sincronização do servidor para manter a estabilidade estrutural e a imersão dentro de Aincrad.</p>
+
+                            <div class="eula-disclaimer">
+                                <strong>Aviso:</strong> Este documento é uma peça fictícia de ambientação criada estritamente para imersão no jogo de RPG. Nenhuma responsabilidade legal ou financeira real é assumida.
+                            </div>
+                        </div>
+
+                        <div class="form-group margin-top">
+                            <label class="checkbox-container">
+                                <input type="checkbox" id="eulaAgree" required>
+                                <strong>Li e concordo com os termos do Contrato de Usuário do Sword Art Online.</strong>
+                            </label>
+                        </div>
+
+                        <div class="grid-3col margin-top">
+                            <div class="form-group">
+                                <label for="digitalSignature">Assinatura Digital (Digite seu Nome Completo) *</label>
+                                <input type="text" id="digitalSignature" class="input-field" placeholder="Deve ser igual ao Nome Completo" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="regDate">Data de Registro</label>
+                                <input type="text" id="regDate" class="input-field" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="regId">ID de Registro</label>
+                                <input type="text" id="regId" class="input-field" readonly>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ETAPA 6: CONFIRMAÇÃO E DOWNLOAD -->
+                <section id="step-6" class="step-screen hidden">
+                    <div class="confirmation-card">
+                        <div class="success-badge">Registro concluído</div>
+                        <h2>Perfil de jogador aceito</h2>
+
+                        <div class="license-card glass-panel">
+                            <div class="license-header">
+                                <div class="sao-brand">
+                                    <h3>SWORD ART ONLINE</h3>
+                                    <span>Licença FullDive</span>
+                                </div>
+                                <div class="license-status">Status: pronto</div>
+                            </div>
+                            <hr class="divider">
+                            <div class="license-details">
+                                <div class="detail-item">
+                                    <span class="detail-label">Nome do jogador</span>
+                                    <span class="detail-val" id="summaryName">---</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">ID de registro</span>
+                                    <span class="detail-val" id="summaryId">---</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Sistema</span>
+                                    <span class="detail-val">NerveGear FullDive</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Tipo de licença</span>
+                                    <span class="detail-val">Edição Individual</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="action-box margin-top">
+                            <button id="btn-download" class="btn-primary glow-btn large-btn">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                                Baixar contrato de registro
+                            </button>
+                            
+                            <div class="admin-notice margin-top">
+                                <h4>Envie este documento para o administrador do jogo</h4>
+                                <p>Seu registro foi concluído com sucesso. Envie o arquivo baixado para a pessoa que forneceu o terminal de registro para concluir sua integração ao sistema.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- BARRA DE NAVEGAÇÃO -->
+                <nav id="nav-bar" class="nav-bar hidden">
+                    <button type="button" id="btn-back" class="btn-secondary" disabled>Voltar</button>
+                    <button type="button" id="btn-continue" class="btn-primary">Continuar</button>
+                </nav>
+
+            </form>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
