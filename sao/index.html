@@ -97,10 +97,6 @@
                                     <input type="text" id="country" class="input-field" placeholder="Brasil">
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label for="timeZone">Fuso Horário</label>
-                                <input type="text" id="timeZone" class="input-field" placeholder="UTC-03:00 (Brasília)">
-                            </div>
                         </div>
 
                         <!-- Aparência do Avatar -->
@@ -213,10 +209,12 @@
                             <div class="checkbox-grid" id="weapon-options">
                                 <label class="custom-chip"><input type="checkbox" value="Espada"><span>Espada</span></label>
                                 <label class="custom-chip"><input type="checkbox" value="Florete"><span>Florete</span></label>
-                                <label class="custom-chip"><input type="checkbox" value="Espagardão"><span>Espagardão (Greatsword)</span></label>
+                                <label class="custom-chip"><input type="checkbox" value="Espada Grande"><span>Espada Grande</span></label>
                                 <label class="custom-chip"><input type="checkbox" value="Adaga"><span>Adaga</span></label>
                                 <label class="custom-chip"><input type="checkbox" value="Lança"><span>Lança</span></label>
                                 <label class="custom-chip"><input type="checkbox" value="Machado"><span>Machado</span></label>
+                                <label class="custom-chip"><input type="checkbox" value="Machado Grande"><span>Machado Grande</span></label>
+                                <label class="custom-chip"><input type="checkbox" value="Martelo de Guerra"><span>Martelo de Guerra</span></label>
                                 <label class="custom-chip"><input type="checkbox" value="Maça"><span>Maça</span></label>
                                 <label class="custom-chip"><input type="checkbox" value="Arco"><span>Arco</span></label>
                                 <label class="custom-chip"><input type="checkbox" value="Escudo"><span>Escudo</span></label>
@@ -248,6 +246,11 @@
                             <label for="combatDescription">Descreva seu estilo de luta ideal em combate.</label>
                             <textarea id="combatDescription" class="textarea-field" rows="2" placeholder="Ex: Aparar ataques no último segundo e contra-atacar com precisão..."></textarea>
                         </div>
+
+                        <div class="form-group">
+                            <label for="gameClass">Que classe você seguiria?</label>
+                            <input type="text" id="gameClass" class="input-field" placeholder="Guerreiro, mago, paladino...">
+                        </div>
                     </div>
 
                     <div class="glass-panel margin-top">
@@ -256,19 +259,24 @@
                         <div class="form-group">
                             <label>Se Sword Art Online oferecesse caminhos de progressão, quais te interessariam?</label>
                             <div class="checkbox-grid" id="role-options">
-                                <label class="custom-chip"><input type="checkbox" value="Combatente de Linha de Frente"><span>Linha de Frente</span></label>
-                                <label class="custom-chip"><input type="checkbox" value="Tank / Defensor"><span>Tank</span></label>
-                                <label class="custom-chip"><input type="checkbox" value="Duelista"><span>Duelista</span></label>
-                                <label class="custom-chip"><input type="checkbox" value="Assassino"><span>Assassino</span></label>
-                                <label class="custom-chip"><input type="checkbox" value="Ranger / Atirador"><span>Ranger</span></label>
-                                <label class="custom-chip"><input type="checkbox" value="Mago"><span>Mago</span></label>
-                                <label class="custom-chip"><input type="checkbox" value="Suporte"><span>Suporte</span></label>
                                 <label class="custom-chip"><input type="checkbox" value="Artesão / Ferreiro"><span>Artesão</span></label>
                                 <label class="custom-chip"><input type="checkbox" value="Explorador"><span>Explorador</span></label>
                                 <label class="custom-chip"><input type="checkbox" value="Comerciante"><span>Comerciante</span></label>
-                                <label class="custom-chip"><input type="checkbox" value="Jogador Solo"><span>Jogador Solo</span></label>
+                                <label class="custom-chip"><input type="checkbox" value="Alquimista / Boticário"><span>Alquimista</span></label>
+                                <label class="custom-chip"><input type="checkbox" value="Minerador"><span>Minerador</span></label>
+                                <label class="custom-chip"><input type="checkbox" value="Cozinheiro"><span>Cozinheiro</span></label>
+                                <label class="custom-chip"><input type="checkbox" value="Encantador / Runemante"><span>Encantador</span></label>
+                                <label class="custom-chip"><input type="checkbox" value="Pescador"><span>Pescador</span></label>
+                                <label class="custom-chip"><input type="checkbox" value="Caçador"><span>Caçador</span></label>
                                 <label class="custom-chip"><input type="checkbox" value="Membro de Guilda"><span>Membro de Guilda</span></label>
+                                <label class="custom-chip"><input type="checkbox" value="Líder de Guilda"><span>Líder de Guilda</span></label>
+                                <label class="custom-chip"><input type="checkbox" value="Outro"><span>Outro</span></label>
                             </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="interestedRoles-extra">Caso "Outro", qual seria?</label>
+                            <input type="text" id="interestedRoles-extra" class="input-field" placeholder="...">
                         </div>
 
                         <div class="form-group">
