@@ -229,10 +229,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 selectedWeapons: getSelectedCheckboxes('weapon-options'),
                 primaryWeapon: document.getElementById('primaryWeapon').value,
                 combatStyles: getSelectedCheckboxes('style-options'),
-                combatDescription: document.getElementById('combatDescription').value
+                combatDescription: document.getElementById('combatDescription').value,
+                gameClass: document.getElementById('gameClass').value
             },
             progressionAndRole: {
                 interestedRoles: getSelectedCheckboxes('role-options'),
+                interestedRolesExtra: document.getElementById('interestedRoles-extra').value,
                 specializationBalance: document.getElementById('specializationSlider').value,
                 rareAbilitiesImportance: document.querySelector('input[name="rareRating"]:checked')?.value || '3'
             },
@@ -240,8 +242,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 activities: getSelectedCheckboxes('world-activities'),
                 disappointments: document.getElementById('disappointments').value,
                 hopeForFeatures: document.getElementById('mustExist').value,
-                storyPreference: document.getElementById('storyPreference').value,
-                hypotheticalTrappedPersona: document.getElementById('hypotheticalTrapped')?.value || ''
+                storyPreference: document.getElementById('storyPreference').value
             },
             personalGoals: {
                 firstGoal: document.getElementById('firstGoal').value,
@@ -322,7 +323,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="field"><div class="label">Apelido / Nome do Avatar</div><div class="val">${data.playerIdentity.preferredName || '-'}</div></div>
                     <div class="field"><div class="label">Idade / Aniversário</div><div class="val">${data.playerIdentity.age || '-'} anos (${data.playerIdentity.birthday || 'N/A'})</div></div>
                     <div class="field"><div class="label">Pronomes</div><div class="val">${data.playerIdentity.pronouns || '-'}</div></div>
-                    <div class="field"><div class="label">País / Fuso Horário</div><div class="val">${data.playerIdentity.country || '-'} (${data.playerIdentity.timeZone || '-'})</div></div>
                     <div class="field"><div class="label">ID de Registro</div><div class="val">${data.meta.registrationId}</div></div>
                 </div>
             </div>
@@ -355,7 +355,9 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="field"><div class="label">Arma Principal</div><div class="val">${data.combatProfile.primaryWeapon || '-'}</div></div>
             <div class="field"><div class="label">Estilos de Luta</div><div class="val">${renderList(data.combatProfile.combatStyles)}</div></div>
             <div class="field full"><div class="label">Descrição do Estilo de Luta</div><div class="val">${data.combatProfile.combatDescription || '-'}</div></div>
+            <div class="field"><div class="label">Classe</div><div class="val">${data.combatProfile.gameClass || '-'}</div></div>
             <div class="field full"><div class="label">Roles / Funções de Interesse</div><div class="val">${renderList(data.progressionAndRole.interestedRoles)}</div></div>
+            <div class="field"><div class="label">Outro Caminho de Progressão</div><div class="val">${data.progressionAndRole.interestedRolesExtra || '-'}</div></div>
             <div class="field"><div class="label">Especialização vs Versatilidade</div><div class="val">${data.progressionAndRole.specializationBalance}% Versátil</div></div>
             <div class="field"><div class="label">Importância de Habilidades Raras</div><div class="val">${data.progressionAndRole.rareAbilitiesImportance} / 5</div></div>
         </div>
@@ -367,7 +369,6 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="field"><div class="label">O que o Decepcionaria</div><div class="val">${data.worldExpectations.disappointments || '-'}</div></div>
             <div class="field"><div class="label">O que Realmente Espera Encontrar</div><div class="val">${data.worldExpectations.hopeForFeatures || '-'}</div></div>
             <div class="field full"><div class="label">História Desejada</div><div class="val">${data.worldExpectations.storyPreference || '-'}</div></div>
-            <div class="field full"><div class="label">Se ficasse preso... quem gostaria de ser?</div><div class="val">${data.worldExpectations.hypotheticalTrappedPersona || '-'}</div></div>
             <div class="field"><div class="label">Primeiro Objetivo ao Entrar</div><div class="val">${data.personalGoals.firstGoal || '-'}</div></div>
             <div class="field"><div class="label">Motivação para Alcançar o Topo</div><div class="val">${data.personalGoals.highestFloorMotivation || '-'}</div></div>
             <div class="field"><div class="label">Preferência de Exploração</div><div class="val">${data.personalGoals.socialPreference || '-'}</div></div>
