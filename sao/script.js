@@ -158,7 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
             { id: 'proc-combat', text: 'Configurado' },
             { id: 'proc-preferences', text: 'Salvo' },
             { id: 'proc-objectives', text: 'Registrado' },
-            { id: 'proc-nervegear', text: 'Online e pronto' }
+            { id: 'proc-nervegear', text: 'Confirmado' }
         ];
 
         statuses.forEach((item, index) => {
@@ -204,8 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 age: document.getElementById('age').value,
                 birthday: document.getElementById('birthday').value,
                 pronouns: document.getElementById('pronouns').value,
-                country: document.getElementById('country').value,
-                timeZone: document.getElementById('timeZone').value
+                country: document.getElementById('country').value
             },
             avatarProfile: {
                 avatarImageBase64: uploadedAvatarBase64,
@@ -310,7 +309,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="header">
             <h1>Sword Art Online</h1>
             <p>Argus Systems — Dossiê de registro de jogador</p>
-            <div style="margin-top: 12px;"><span class="status-badge">Licença ativa · Conexão autorizada</span></div>
+            <div style="margin-top: 12px;"><span class="status-badge">Licença ativa · Registro confirmado</span></div>
         </div>
 
         <!-- 1. Identidade e registro -->
@@ -388,7 +387,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         <div class="footer">
             Argus Systems Co., Ltd. &copy; 2026. Todos os direitos reservados.<br>
-            Documento gerado para sincronização de hardware FullDive.
+            Documento gerado automaticamente pelo sistema de registro.
         </div>
     </div>
 
