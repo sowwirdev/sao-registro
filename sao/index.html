@@ -19,7 +19,7 @@
         <header id="main-header" class="hidden">
             <div class="logo-group">
                 <span class="brand-tag">ARGUS SYSTEMS</span>
-                <span class="system-title">Sistema FullDive</span>
+                <span class="system-title">Sword Art Online</span>
             </div>
             <div class="step-indicator" id="step-indicator">
                 <span class="step-dot active" data-step="1"></span>
@@ -39,14 +39,14 @@
                 <div class="splash-card">
                     <div class="argus-badge">ARGUS SYSTEMS</div>
                     <div class="terminal-loader">
-                        <div class="terminal-text" id="boot-status">Inicializando conexão FullDive...</div>
+                        <div class="terminal-text" id="boot-status">Carregando sistema de registro...</div>
                         <div class="progress-bar-container">
                             <div class="progress-bar" id="boot-progress"></div>
                         </div>
                         <div class="progress-percentage" id="boot-percentage">0%</div>
                     </div>
                     <div class="splash-titles hidden" id="splash-titles">
-                        <div class="status-badge-ready">Conexão NerveGear pronta</div>
+                        <div class="status-badge-ready">Registro disponível</div>
                         <h1 class="main-title">SWORD ART ONLINE</h1>
                         <p class="sub-title">FullDive MMORPG</p>
                         <button id="btn-begin" class="btn-primary glow-btn">Iniciar registro</button>
@@ -101,7 +101,7 @@
 
                         <!-- Aparência do Avatar -->
                         <div class="glass-panel">
-                            <h3>Perfil do avatar</h3>
+                            <h3>Perfil do jogador</h3>
                             
                             <!-- Upload de Imagem de Avatar -->
                             <div class="avatar-upload-container">
@@ -109,7 +109,7 @@
                                     <img id="avatarImagePreview" src="" alt="Preview do Avatar" class="hidden">
                                     <div id="avatarPlaceholder" class="avatar-placeholder">
                                         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                                        <span>Enviar imagem do avatar</span>
+                                        <span>Enviar imagem do jogador</span>
                                     </div>
                                 </div>
                                 <input type="file" id="avatarUpload" accept="image/*" class="hidden-file-input">
@@ -403,7 +403,7 @@
                     <div class="processing-card">
                         <div class="spinner-ring"></div>
                         <h2>Compilando perfil de jogador</h2>
-                        <p class="subtitle">Sincronizando biometria com os servidores da Argus Systems...</p>
+                        <p class="subtitle">Salvando suas respostas nos servidores da Argus Systems...</p>
 
                         <div class="status-list">
                             <div class="status-row" id="proc-identity"><span class="status-label">Identidade</span><span class="status-value">Pendente</span></div>
@@ -411,7 +411,7 @@
                             <div class="status-row" id="proc-combat"><span class="status-label">Perfil de combate</span><span class="status-value">Pendente</span></div>
                             <div class="status-row" id="proc-preferences"><span class="status-label">Preferências</span><span class="status-value">Pendente</span></div>
                             <div class="status-row" id="proc-objectives"><span class="status-label">Registro de objetivos</span><span class="status-value">Pendente</span></div>
-                            <div class="status-row" id="proc-nervegear"><span class="status-label">Status do NerveGear</span><span class="status-value">Pendente</span></div>
+                            <div class="status-row" id="proc-nervegear"><span class="status-label">Confirmação do registro</span><span class="status-value">Pendente</span></div>
                         </div>
 
                         <button id="btn-proceed-eula" class="btn-primary hidden glow-btn margin-top">Prosseguir para contrato</button>
