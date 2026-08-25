@@ -165,11 +165,11 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 const el = document.getElementById(item.id).querySelector('.status-value');
                 el.textContent = item.text;
-                el.style.color = '#10b981';
+                el.style.color = '#58dfd3';
                 if (index === statuses.length - 1) {
                     btnProceedEula.classList.remove('hidden');
                 }
-            }, (index + 1) * 500);
+            }, (index + 1) * 400);
         });
     }
 
@@ -196,7 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
             meta: {
                 registrationId: document.getElementById('regId').value,
                 registrationDate: document.getElementById('regDate').value,
-                systemVersion: "Argus FullDive OS"
+                systemVersion: "Argus FullDive OS v4.2"
             },
             playerIdentity: {
                 fullName: document.getElementById('fullName').value,
@@ -260,145 +260,271 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     }
 
+    // Funções auxiliares de sanitização e formatação
+    function escapeHtml(str) {
+        if (str === null || str === undefined) return '';
+        return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    }
+
+    function formatText(str) {
+        if (!str || !str.trim()) return '<span class="text-muted">Não informado</span>';
+        return escapeHtml(str).replace(/\n/g, '<br>');
+    }
+
+    function renderChips(arr) {
+        if (!arr || arr.length === 0) return '<span class="text-muted">Nenhum selecionado</span>';
+        return arr.map(item => `<span class="chip">${escapeHtml(item)}</span>`).join(' ');
+    }
+
     /* ----------------------------------------------------------------------
-       GERAÇÃO DO DOSSIÊ COMPLETO (VISÍVEL NO NAVEGADOR PARA O MESTRE)
+       GERAÇÃO DO DOSSIÊ COMPLETO COM ESTILO IDENTICO AO FORMULÁRIO (GITHUB DARK)
        ---------------------------------------------------------------------- */
     function exportPurchaseAgreement() {
         const data = collectFormData();
-        const playerName = data.playerIdentity.preferredName || data.playerIdentity.fullName || 'Jogador';
-        const fileName = `SAO_Registro_${playerName.replace(/\s+/g, '_')}.html`;
+        const rawName = data.playerIdentity.preferredName || data.playerIdentity.fullName || 'Jogador';
+        const safeFileName = rawName.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-zA-Z0-9_-]/g, '_');
+        const fileName = `SAO_Registro_${safeFileName}.html`;
 
         const avatarImgTag = data.avatarProfile.avatarImageBase64 
-            ? `<img src="${data.avatarProfile.avatarImageBase64}" style="max-width:200px; max-height:220px; border:1px solid #97c2e3; border-radius:12px; object-fit:cover;">`
-            : `<div style="width:160px; height:180px; border:1px dashed rgba(151,194,227,0.4); border-radius:12px; display:flex; align-items:center; justify-content:center; color:#8fa1b8; font-size:13px;">Sem foto do avatar</div>`;
-
-        const renderList = (arr) => arr.length > 0 ? arr.map(i => `<span class="chip">${i}</span>`).join(' ') : '<span class="text-muted">Nenhum selecionado</span>';
+            ? `<img src="${data.avatarProfile.avatarImageBase64}" alt="Avatar" class="avatar-img">`
+            : `<div class="avatar-placeholder-box">Sem Foto de Jogador</div>`;
 
         const htmlContent = `<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Sword Art Online — Dossiê do jogador</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro do jogador: ${escapeHtml(rawName)}</title>
     <style>
-        body { background: radial-gradient(ellipse 80% 50% at 50% 0%, #16233a 0%, #0c1420 55%); color: #e9eef6; font-family: 'Rajdhani', sans-serif; padding: 30px; margin: 0; line-height: 1.5; }
-        .document-card { max-width: 900px; margin: 0 auto; background: rgba(24, 37, 58, 0.6); border: 1px solid rgba(151, 194, 227, 0.16); border-radius: 16px; padding: 36px; backdrop-filter: blur(16px); }
-        .header { text-align: center; border-bottom: 1px solid rgba(151, 194, 227, 0.2); padding-bottom: 20px; margin-bottom: 25px; }
-        .header h1 { font-family: 'Orbitron', sans-serif; font-size: 30px; margin: 0; color: #ffffff; letter-spacing: 1px; }
-        .header p { color: #8fcbe8; font-weight: 600; margin-top: 6px; font-size: 14px; }
-        .status-badge { display: inline-block; background: rgba(127, 208, 163, 0.14); border: 1px solid #7fd0a3; color: #7fd0a3; padding: 4px 14px; font-weight: 700; border-radius: 20px; font-size: 12px; }
+        :root {
+            --color-canvas-default: #0d1117;
+            --color-canvas-subtle: #161b22;
+            --color-canvas-inset: #010409;
+            --color-border-default: #30363d;
+            --color-border-muted: #21262d;
+            
+            --color-fg-default: #e6edf3;
+            --color-fg-muted: #848d97;
+            --color-fg-subtle: #6e7681;
+            
+            --color-accent-fg: #98b4db;
+            --color-accent-emphasis: #85b6ff;
+            --color-accent-subtle: rgba(56, 139, 253, 0.15);
+            
+            --color-success-fg: #58dfd3;
+            
+            --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+            --radius-default: 6px;
+        }
 
-        .section-title { font-weight: 700; font-size: 15px; color: #d9b878; border-bottom: 1px solid rgba(151, 194, 227, 0.18); padding-bottom: 6px; margin-top: 30px; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body { 
+            background-color: var(--color-canvas-default); 
+            color: var(--color-fg-default); 
+            font-family: var(--font-stack); 
+            font-size: 14px; 
+            line-height: 1.5; 
+            padding: 32px 16px; 
+        }
+        
+        .document-card { 
+            max-width: 900px; 
+            margin: 0 auto; 
+            background: var(--color-canvas-subtle); 
+            border: 1px solid var(--color-border-default); 
+            border-radius: var(--radius-default); 
+            padding: 24px; 
+        }
+        
+        .header { 
+            border-bottom: 1px solid var(--color-border-muted); 
+            padding-bottom: 16px; 
+            margin-bottom: 20px; 
+        }
+        .header h1 { 
+            font-size: 20px; 
+            font-weight: 600; 
+            color: var(--color-fg-default); 
+        }
+        .header p { 
+            color: var(--color-accent-fg); 
+            font-weight: 600; 
+            font-size: 11px; 
+            margin-top: 2px; 
+            text-transform: uppercase; 
+            letter-spacing: 0.5px; 
+        }
+        .status-badge { 
+            display: inline-block; 
+            background: rgba(46, 160, 67, 0.15); 
+            border: 1px solid var(--color-success-fg); 
+            color: var(--color-success-fg); 
+            padding: 2px 8px; 
+            font-weight: 600; 
+            border-radius: 12px; 
+            font-size: 11px; 
+            margin-top: 10px; 
+        }
 
-        .grid-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 12px; }
+        .section-title { 
+            font-size: 14px; 
+            font-weight: 600; 
+            color: var(--color-fg-default); 
+            border-bottom: 1px solid var(--color-border-muted); 
+            padding-bottom: 6px; 
+            margin-top: 24px; 
+        }
+
+        .grid-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
         .grid-3col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 12px; }
 
-        .field { background: rgba(255,255,255,0.03); padding: 12px; border-radius: 8px; border: 1px solid rgba(151, 194, 227, 0.1); }
+        .field { 
+            background: var(--color-canvas-default); 
+            padding: 8px 12px; 
+            border-radius: var(--radius-default); 
+            border: 1px solid var(--color-border-default); 
+        }
         .field.full { grid-column: 1 / -1; }
-        .label { font-size: 12px; color: #8fa1b8; font-weight: 600; }
-        .val { font-size: 16px; font-weight: 600; color: #ffffff; margin-top: 4px; }
-        .text-muted { color: #8fa1b8; }
+        .label { 
+            font-size: 11px; 
+            color: var(--color-fg-muted); 
+            font-weight: 600; 
+            text-transform: uppercase; 
+            letter-spacing: 0.5px; 
+        }
+        .val { 
+            font-size: 14px; 
+            font-weight: 500; 
+            color: var(--color-fg-default); 
+            margin-top: 2px; 
+            word-break: break-word; 
+        }
+        .text-muted { color: var(--color-fg-muted); font-style: italic; }
 
-        .profile-header-box { display: flex; gap: 20px; align-items: center; margin-top: 15px; }
-        .chip { display: inline-block; background: rgba(143, 203, 232, 0.12); border: 1px solid rgba(143, 203, 232, 0.4); color: #fff; padding: 3px 11px; border-radius: 12px; font-size: 13px; margin: 2px; }
-        .footer { text-align: center; margin-top: 40px; font-size: 13px; color: #8fa1b8; border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 20px; }
+        .profile-header-box { display: flex; gap: 16px; align-items: flex-start; margin-top: 12px; }
+        .avatar-img { width: 140px; height: 160px; border: 1px solid var(--color-border-default); border-radius: var(--radius-default); object-fit: cover; }
+        .avatar-placeholder-box { width: 140px; height: 160px; border: 1px dashed var(--color-border-default); border-radius: var(--radius-default); display: flex; align-items: center; justify-content: center; color: var(--color-fg-muted); font-size: 12px; text-align: center; padding: 8px; background: var(--color-canvas-default); }
+
+        .chip { 
+            display: inline-block; 
+            padding: 4px 10px; 
+            background: var(--color-accent-subtle); 
+            border: 1px solid rgba(56, 139, 253, 0.4); 
+            color: var(--color-accent-fg); 
+            border-radius: 20px; 
+            font-size: 12px; 
+            font-weight: 500; 
+            margin: 2px 2px 2px 0; 
+        }
+        .footer { text-align: center; margin-top: 32px; font-size: 12px; color: var(--color-fg-muted); border-top: 1px solid var(--color-border-muted); padding-top: 16px; }
+
+        @media (max-width: 650px) {
+            .profile-header-box { flex-direction: column; align-items: center; }
+            .grid-2col, .grid-3col { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
     <div class="document-card">
         <div class="header">
-            <h1>Sword Art Online</h1>
-            <p>Argus Systems — Dossiê de registro de jogador</p>
-            <div style="margin-top: 12px;"><span class="status-badge">Licença ativa · Registro confirmado</span></div>
+            <p>Registro de Jogador</p>
+            <h1>SWORD ART ONLINE</h1>
+            <div><span class="status-badge">Licença Ativa · Registro Confirmado</span></div>
         </div>
 
-        <!-- 1. Identidade e registro -->
-        <div class="section-title">01 · Identidade e registro</div>
+        <!-- 01. IDENTIDADE -->
+        <div class="section-title">01. Identidade e Registro</div>
         <div class="profile-header-box">
             <div>${avatarImgTag}</div>
-            <div style="flex:1;">
+            <div style="flex:1; width: 100%;">
                 <div class="grid-2col" style="margin-top:0;">
-                    <div class="field"><div class="label">Nome Completo</div><div class="val">${data.playerIdentity.fullName || '-'}</div></div>
-                    <div class="field"><div class="label">Apelido / Nome do Avatar</div><div class="val">${data.playerIdentity.preferredName || '-'}</div></div>
-                    <div class="field"><div class="label">Idade / Aniversário</div><div class="val">${data.playerIdentity.age || '-'} anos (${data.playerIdentity.birthday || 'N/A'})</div></div>
-                    <div class="field"><div class="label">Pronomes</div><div class="val">${data.playerIdentity.pronouns || '-'}</div></div>
-                    <div class="field"><div class="label">ID de Registro</div><div class="val">${data.meta.registrationId}</div></div>
+                    <div class="field"><div class="label">Nome Completo</div><div class="val">${formatText(data.playerIdentity.fullName)}</div></div>
+                    <div class="field"><div class="label">Apelido / Nome de Preferência</div><div class="val">${formatText(data.playerIdentity.preferredName)}</div></div>
+                    <div class="field"><div class="label">Idade / Data de Nascimento</div><div class="val">${escapeHtml(data.playerIdentity.age || '-')} anos (${escapeHtml(data.playerIdentity.birthday || 'N/A')})</div></div>
+                    <div class="field"><div class="label">Pronomes / País</div><div class="val">${formatText(data.playerIdentity.pronouns)} / ${formatText(data.playerIdentity.country)}</div></div>
+                    <div class="field full"><div class="label">ID de Registro</div><div class="val">${escapeHtml(data.meta.registrationId)}</div></div>
                 </div>
             </div>
         </div>
 
-        <!-- 2. APARÊNCIA DO AVATAR -->
-        <div class="section-title">02 · Atributos visuais do avatar</div>
+        <!-- 02. APARÊNCIA -->
+        <div class="section-title">02. Atributos Visuais do Jogador</div>
         <div class="grid-3col">
-            <div class="field"><div class="label">Cabelo</div><div class="val">${data.avatarProfile.hairColor || '-'} (${data.avatarProfile.hairStyle || '-'})</div></div>
-            <div class="field"><div class="label">Olhos / Tom de Pele</div><div class="val">${data.avatarProfile.eyeColor || '-'} / ${data.avatarProfile.skinTone || '-'}</div></div>
-            <div class="field"><div class="label">Altura / Porte Físico</div><div class="val">${data.avatarProfile.height || '-'} / ${data.avatarProfile.build || '-'}</div></div>
-            <div class="field full"><div class="label">Marcas Distintivas</div><div class="val">${data.avatarProfile.distinguishingFeatures || 'Nenhuma'}</div></div>
-            <div class="field full"><div class="label">Descrição Visual</div><div class="val">${data.avatarProfile.description || 'Sem descrição adicional.'}</div></div>
+            <div class="field"><div class="label">Cabelo</div><div class="val">${formatText(data.avatarProfile.hairColor)} (${formatText(data.avatarProfile.hairStyle)})</div></div>
+            <div class="field"><div class="label">Olhos / Tom de Pele</div><div class="val">${formatText(data.avatarProfile.eyeColor)} / ${formatText(data.avatarProfile.skinTone)}</div></div>
+            <div class="field"><div class="label">Altura / Porte Físico</div><div class="val">${formatText(data.avatarProfile.height)} / ${formatText(data.avatarProfile.build)}</div></div>
+            <div class="field full"><div class="label">Marcas Distintivas</div><div class="val">${formatText(data.avatarProfile.distinguishingFeatures)}</div></div>
+            <div class="field full"><div class="label">Descrição Visual do Jogador</div><div class="val">${formatText(data.avatarProfile.description)}</div></div>
         </div>
 
-        <!-- 3. PERFIL PSICOMÉTRICO -->
-        <div class="section-title">03 · Perfil psicométrico</div>
+        <!-- 03. PSICOMÉTRICO -->
+        <div class="section-title">03. Perfil Psicométrico</div>
         <div class="grid-2col">
-            <div class="field full"><div class="label">Auto-descrição</div><div class="val">${data.personality.selfDescription || '-'}</div></div>
-            <div class="field"><div class="label">Pontos Fortes</div><div class="val">${data.personality.strengths || '-'}</div></div>
-            <div class="field"><div class="label">Fraquezas</div><div class="val">${data.personality.weaknesses || '-'}</div></div>
-            <div class="field"><div class="label">Motivações</div><div class="val">${data.personality.motivations || '-'}</div></div>
-            <div class="field"><div class="label">Reação sob Pressão</div><div class="val">${data.personality.reactionUnderPressure || '-'}</div></div>
+            <div class="field full"><div class="label">Auto-descrição</div><div class="val">${formatText(data.personality.selfDescription)}</div></div>
+            <div class="field"><div class="label">Pontos Fortes</div><div class="val">${formatText(data.personality.strengths)}</div></div>
+            <div class="field"><div class="label">Fraquezas / Vulnerabilidades</div><div class="val">${formatText(data.personality.weaknesses)}</div></div>
+            <div class="field"><div class="label">Motivações</div><div class="val">${formatText(data.personality.motivations)}</div></div>
+            <div class="field"><div class="label">Reação sob Pressão</div><div class="val">${formatText(data.personality.reactionUnderPressure)}</div></div>
         </div>
 
-        <!-- 4. PERFIL DE COMBATE E PROGRESSÃO -->
-        <div class="section-title">04 · Combate e progressão</div>
+        <!-- 04. COMBATE -->
+        <div class="section-title">04. Combate e Progressão</div>
         <div class="grid-2col">
-            <div class="field full"><div class="label">Armas de Interesse</div><div class="val">${renderList(data.combatProfile.selectedWeapons)}</div></div>
-            <div class="field"><div class="label">Arma Principal</div><div class="val">${data.combatProfile.primaryWeapon || '-'}</div></div>
-            <div class="field"><div class="label">Estilos de Luta</div><div class="val">${renderList(data.combatProfile.combatStyles)}</div></div>
-            <div class="field full"><div class="label">Descrição do Estilo de Luta</div><div class="val">${data.combatProfile.combatDescription || '-'}</div></div>
-            <div class="field"><div class="label">Classe</div><div class="val">${data.combatProfile.gameClass || '-'}</div></div>
-            <div class="field full"><div class="label">Roles / Funções de Interesse</div><div class="val">${renderList(data.progressionAndRole.interestedRoles)}</div></div>
-            <div class="field"><div class="label">Outro Caminho de Progressão</div><div class="val">${data.progressionAndRole.interestedRolesExtra || '-'}</div></div>
-            <div class="field"><div class="label">Especialização vs Versatilidade</div><div class="val">${data.progressionAndRole.specializationBalance}% Versátil</div></div>
-            <div class="field"><div class="label">Importância de Habilidades Raras</div><div class="val">${data.progressionAndRole.rareAbilitiesImportance} / 5</div></div>
+            <div class="field full"><div class="label">Armas de Interesse</div><div class="val">${renderChips(data.combatProfile.selectedWeapons)}</div></div>
+            <div class="field"><div class="label">Arma Principal</div><div class="val">${formatText(data.combatProfile.primaryWeapon)}</div></div>
+            <div class="field"><div class="label">Classe Planejada</div><div class="val">${formatText(data.combatProfile.gameClass)}</div></div>
+            <div class="field full"><div class="label">Estilos de Luta</div><div class="val">${renderChips(data.combatProfile.combatStyles)}</div></div>
+            <div class="field full"><div class="label">Descrição do Estilo de Luta</div><div class="val">${formatText(data.combatProfile.combatDescription)}</div></div>
+            <div class="field full"><div class="label">Roles / Profissões de Interesse</div><div class="val">${renderChips(data.progressionAndRole.interestedRoles)}</div></div>
+            <div class="field"><div class="label">Outro Caminho de Progressão</div><div class="val">${formatText(data.progressionAndRole.interestedRolesExtra)}</div></div>
+            <div class="field"><div class="label">Versatilidade (Slider)</div><div class="val">${escapeHtml(data.progressionAndRole.specializationBalance)}% Versátil</div></div>
+            <div class="field full"><div class="label">Importância de Habilidades Raras</div><div class="val">${escapeHtml(data.progressionAndRole.rareAbilitiesImportance)} / 5</div></div>
         </div>
 
-        <!-- 5. EXPECTATIVAS DE MUNDO E OBJETIVOS -->
-        <div class="section-title">05 · Expectativas e objetivos em Aincrad</div>
+        <!-- 05. EXPECTATIVAS E OBJETIVOS -->
+        <div class="section-title">05. Expectativas e Objetivos em Aincrad</div>
         <div class="grid-2col">
-            <div class="field full"><div class="label">Atividades Desejadas</div><div class="val">${renderList(data.worldExpectations.activities)}</div></div>
-            <div class="field"><div class="label">O que o Decepcionaria</div><div class="val">${data.worldExpectations.disappointments || '-'}</div></div>
-            <div class="field"><div class="label">O que Realmente Espera Encontrar</div><div class="val">${data.worldExpectations.hopeForFeatures || '-'}</div></div>
-            <div class="field full"><div class="label">História Desejada</div><div class="val">${data.worldExpectations.storyPreference || '-'}</div></div>
-            <div class="field"><div class="label">Primeiro Objetivo ao Entrar</div><div class="val">${data.personalGoals.firstGoal || '-'}</div></div>
-            <div class="field"><div class="label">Motivação para Alcançar o Topo</div><div class="val">${data.personalGoals.highestFloorMotivation || '-'}</div></div>
-            <div class="field"><div class="label">Preferência de Exploração</div><div class="val">${data.personalGoals.socialPreference || '-'}</div></div>
-            <div class="field"><div class="label">Companheiros Desejados</div><div class="val">${data.personalGoals.desiredCompanions || '-'}</div></div>
-            <div class="field"><div class="label">Pessoa que Nunca Quer Ser</div><div class="val">${data.personalGoals.antiTargetPersona || '-'}</div></div>
-            <div class="field"><div class="label">Faria Arriscar a Vida</div><div class="val">${data.personalGoals.riskLifeFactor || '-'}</div></div>
-            <div class="field full"><div class="label">Faria Recusar a Lutar</div><div class="val">${data.personalGoals.refuseToFightFactor || '-'}</div></div>
-            <div class="field full"><div class="label">Notas Adicionais do Jogador</div><div class="val">${data.personalGoals.additionalNotes || 'Nenhuma nota adicional.'}</div></div>
+            <div class="field full"><div class="label">Atividades Desejadas</div><div class="val">${renderChips(data.worldExpectations.activities)}</div></div>
+            <div class="field"><div class="label">O que Decepcionaria</div><div class="val">${formatText(data.worldExpectations.disappointments)}</div></div>
+            <div class="field"><div class="label">O que Espera Encontrar</div><div class="val">${formatText(data.worldExpectations.hopeForFeatures)}</div></div>
+            <div class="field full"><div class="label">História Desejada</div><div class="val">${formatText(data.worldExpectations.storyPreference)}</div></div>
+            <div class="field"><div class="label">Primeiro Objetivo ao Entrar</div><div class="val">${formatText(data.personalGoals.firstGoal)}</div></div>
+            <div class="field"><div class="label">Motivação para Alcançar o Topo</div><div class="val">${formatText(data.personalGoals.highestFloorMotivation)}</div></div>
+            <div class="field"><div class="label">Preferência de Exploração</div><div class="val">${formatText(data.personalGoals.socialPreference)}</div></div>
+            <div class="field"><div class="label">Companheiros Desejados</div><div class="val">${formatText(data.personalGoals.desiredCompanions)}</div></div>
+            <div class="field"><div class="label">Pessoa que NUNCA Gostaria de Se Tornar</div><div class="val">${formatText(data.personalGoals.antiTargetPersona)}</div></div>
+            <div class="field"><div class="label">Faria Arriscar a Vida</div><div class="val">${formatText(data.personalGoals.riskLifeFactor)}</div></div>
+            <div class="field full"><div class="label">Faria Recusar a Lutar</div><div class="val">${formatText(data.personalGoals.refuseToFightFactor)}</div></div>
+            <div class="field full"><div class="label">Notas Adicionais</div><div class="val">${formatText(data.personalGoals.additionalNotes)}</div></div>
         </div>
 
-        <!-- 6. ASSINATURA DIGITAL -->
-        <div class="section-title">06 · Assinatura e validação</div>
+        <!-- 06. ASSINATURA -->
+        <div class="section-title">06. Termo de Aceite e Validação</div>
         <div class="grid-2col">
-            <div class="field"><div class="label">Assinatura Digital do Usuário</div><div class="val">${data.agreement.digitalSignature}</div></div>
-            <div class="field"><div class="label">Data do Termo de Aceite</div><div class="val">${data.meta.registrationDate}</div></div>
+            <div class="field"><div class="label">Assinatura Digital</div><div class="val">${formatText(data.agreement.digitalSignature)}</div></div>
+            <div class="field"><div class="label">Data de Emissão</div><div class="val">${escapeHtml(data.meta.registrationDate)}</div></div>
         </div>
 
         <div class="footer">
             Argus Systems Co., Ltd. &copy; 2026. Todos os direitos reservados.<br>
-            Documento gerado automaticamente pelo sistema de registro.
+            Documento de Registro FullDive gerado automaticamente.
         </div>
     </div>
 
-    <!-- ESTRUTURA JSON EMBUTIDA -->
+    <!-- ESTRUTURA JSON EMBUTIDA PARA PARSING AUTOMÁTICO -->
     <script id="sao-player-data" type="application/json">
-        ${JSON.stringify(data, null, 2)}
+        ${JSON.stringify(data, null, 2).replace(/</g, '\\u003c')}
     </script>
 </body>
 </html>`;
 
-        const blob = new Blob([htmlContent], { type: 'text/html' });
+        const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
